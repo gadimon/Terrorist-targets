@@ -100,7 +100,7 @@ export const getHeardersAttacksByRegion = async (
   res: Response
 ) => {
   try {
-    const groupName = req.query.year as string;
+    const groupName = req.query.groupName as string;
     const TerrorEvents = await heardersAttacksByRegion(groupName);
     if (!TerrorEvents) {
       res.status(404).json({ msg: "Terror Events not found" });
@@ -108,6 +108,6 @@ export const getHeardersAttacksByRegion = async (
     }
     res.json(TerrorEvents);
   } catch (error) {
-    res.status(500).json({ msg: "Server error" + error });
+    res.status(500).json({ msg: "Server error " + error });
   }
 };

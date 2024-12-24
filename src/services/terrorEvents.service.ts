@@ -169,7 +169,7 @@ export const heardersAttacksByRegion = async (groupName: string) => {
             country: "$country_txt",
             region: "$region_txt",
           },
-          total: { $sum: { $sum: ["$nkill", "$nwound"] } },
+          total: { $sum: { $add: ["$nkill", "$nwound"] } },
         },
       },
       {
@@ -186,6 +186,7 @@ export const heardersAttacksByRegion = async (groupName: string) => {
         },
       },
     ]);
+
     return result;
   } catch (error) {
     console.error("Error during aggregation:", error);
