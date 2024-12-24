@@ -106,10 +106,13 @@ export const fiveAttacksByEventeInRegion = async (
   limit: number
 ): Promise<ITerrorEvent[] | null> => {
   try {
+    const matchStage =
+      regionName && regionName !== "All"
+        ? { $match: { region_txt: regionName } }
+        : { $match: {} };
+
     return await TerrorEvents.aggregate([
-      {
-        $match: { region_txt: regionName },
-      },
+      matchStage,
       {
         $group: {
           _id: "$gname",
@@ -117,13 +120,14 @@ export const fiveAttacksByEventeInRegion = async (
         },
       },
       {
-        $sort: { total: 1 },
+        $sort: { total: -1 },
       },
       {
         $limit: limit ? limit : 5,
       },
     ]);
   } catch (error) {
+    console.error("Error fetching TerrorEvents:", error);
     throw new Error("Error fetching TerrorEvents");
   }
 };
